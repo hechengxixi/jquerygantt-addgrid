@@ -153,31 +153,12 @@
     };
 
     $.fn.gantt = function (options) {
-        if(typeof options === 'string'){
-            this.each(function(){
-                if(typeof options === 'string' && !this.scrollNavigation){
-                    console.error("gantt 插件未初始化,无法调用任何方法!");
-                    return;
-                }
-                if(options === 'zoomIn'){
-                    $(this).find('.nav-zoomIn').trigger('click');
-                    return;
-                }
-                 if(options === 'zoomOut'){
-                    $(this).find('.nav-zoomOut').trigger('click');
-                    return;
-                }
-            })
-            return;
-        }
+
         var scales = ["hours", "days", "weeks", "months"];
         //Default settings
         var settings = {
             source: [],
             holidays: [],
-            // 左边grid
-            gridHeaders:[], // 配置grid头部
-            //leftPanelWidth:'500', // 单位为px 无默认值
             // paging
             itemsPerPage: 7,
             // localisation
@@ -185,7 +166,6 @@
             months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
             waitText: "Please wait...",
             // navigation
-            showNavigate: true, // 是否显示底部导航工具
             navigate: "buttons",
             scrollToToday: true,
             // cookie options
@@ -292,14 +272,6 @@
                 // Set a cookie to record current position in the view
                 if (settings.useCookie) {
                     var sc = $.cookie(settings.cookieKey + "ScrollPos");
-                    // 解决获取的cookie数据为字符串类型，导致null->'null'的问题
-                    if(sc !== 'null'){
-                        sc = parseInt(sc);
-                        sc = isNaN(sc) ? 0 : sc;
-                    }else{
-                        sc = null;
-                    }
-                    
                     if (sc) {
                         element.hPosition = sc;
                     }
@@ -842,7 +814,7 @@
                 // Scrolling navigation is provided by setting
                 // `settings.navigate='scroll'`
                 if (settings.navigate === "scroll") {
-                    ganttNavigate = $('<div class="navigate" style="'+(settings.showNavigate ? '' : 'display:none;')+'" />')
+                    ganttNavigate = $('<div class="navigate" />')
                         .append($('<div class="nav-slider" />')
                             .append($('<div class="nav-slider-left" />')
                                 .append($('<button type="button" class="nav-link nav-page-back"/>')

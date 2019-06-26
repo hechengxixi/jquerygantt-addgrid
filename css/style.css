@@ -68,13 +68,16 @@
 }
 .fn-gantt .leftPanel td{
     border: 1px solid #DDD;
+    padding-top:0;
+    padding-bottom:0;
+    margin-top:0;
+    margin-bottom:0;
 }
 
 .fn-gantt .leftPanel .fn-label {
     display: inline-block;
     margin: 0 0 0 5px;
     color: #484A4D;
-    width: 110px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

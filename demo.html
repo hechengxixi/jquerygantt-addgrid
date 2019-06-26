@@ -7,10 +7,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="css/style.css" type="text/css" rel="stylesheet">
-       
+       <!-- <style>
+           .bottom{
+               display:none;
+           }
+       </style> -->
     </head>
     <body>
     <div class="gantt"></div>
+    
+    <button class="smaller">缩小</button>
+    <button class="bigger">放大</button>
+    
     <script src="js/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="js/jquery.fn.gantt.js"></script>
@@ -21,7 +29,7 @@
 
             var demoSource = [{
                 name: "Sprint 0",
-                desc: {column1:"c1", column2: "c2"},
+                desc: {column2:"cc2", column1: "c1"},
                 values: [{
                     from: 1320192000000,
                     to: 1322401600000,
@@ -109,12 +117,14 @@
 
             $(".gantt").gantt({
                 source: demoSource,
-                gridHeaders:[{label:'column1', field:'column1'},{label:'column2',field:'column2'}],
+                gridHeaders:[{label:'column1', field:'column1', width:260},{label:'column2',field:'column2'}], // 配置grid头部
+                leftPanelWidth:'500', // 单位为px
+                showNavigate: false, // 是否显示底部导航工具
                 navigate: "scroll",
                 scale: "weeks",
                 maxScale: "months",
                 minScale: "hours",
-                itemsPerPage: 5,
+                itemsPerPage: 10,
                 scrollToToday: false,
                 useCookie: true,
                 onItemClick: function(data) {
@@ -130,17 +140,27 @@
                 }
             });
 
-            $(".gantt").popover({
-                selector: ".bar",
-                title: function _getItemText() {
-                    return this.textContent;
-                },
-                container: '.gantt',
-                content: "Here's some useful information.",
-                trigger: "hover",
-                placement: "auto right"
-            });
-
+//             $(".gantt").popover({
+//                 selector: ".bar",
+//                 title: function _getItemText() {
+//                     return this.textContent;
+//                 },
+//                 container: '.gantt',
+//                 content: "Here's some useful information.",
+//                 trigger: "hover",
+//                 placement: "auto right"
+//             });
+            
+            // 触发缩小放大
+            $('.smaller').on('click', function(){
+                // 缩小
+                 $(".gantt").gantt('zoomOut');
+            })
+            
+            $('.bigger').on('click', function(){
+                // 放大
+                 $(".gantt").gantt('zoomIn');
+            })
 
         });
     </script>
