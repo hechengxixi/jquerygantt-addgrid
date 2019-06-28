@@ -1163,27 +1163,30 @@
                                 dFrom = tools.dateDeserialize(day.from);
                                 dTo = tools.dateDeserialize(day.to);
 
-                                if (dFrom.getDate() <= 3 && dFrom.getMonth() === 0) {
-                                    dFrom.setDate(dFrom.getDate() + 4);
-                                }
+                                // delete ： 不知道原作者的用途
+                                // if (dFrom.getDate() <= 3 && dFrom.getMonth() === 0) {
+                                //     dFrom.setDate(dFrom.getDate() + 4);
+                                // }
 
-                                if (dFrom.getDate() <= 3 && dFrom.getMonth() === 0) {
-                                    dFrom.setDate(dFrom.getDate() + 4);
-                                }
+                                // if (dFrom.getDate() <= 3 && dFrom.getMonth() === 0) {
+                                //     dFrom.setDate(dFrom.getDate() + 4);
+                                // }
 
-                                if (dTo.getDate() <= 3 && dTo.getMonth() === 0) {
-                                    dTo.setDate(dTo.getDate() + 4);
-                                }
+                                // if (dTo.getDate() <= 3 && dTo.getMonth() === 0) {
+                                //     dTo.setDate(dTo.getDate() + 4);
+                                // }
 
                                 from = $(element).find("#dh-" + tools.genId(dFrom));
                                 cFrom = from.data("offset");
                                 to = $(element).find("#dh-" + tools.genId(dTo));
                                 cTo = to.data("offset");
 
-                                // 起始月有效天数占当月百分比（基数为31）
-                                var fromP = 1 - dFrom.getDate() / 31;
+                                // 起始月有效天数占当月百分比
+                                var fromBaseDay = 32-new Date(dFrom.getFullYear(),dFrom.getMonth(),32).getDate();
+                                var fromP = 1 - dFrom.getDate() / fromBaseDay;
                                 // 结束月有效天数占当月百分比
-                                var toP = dTo.getDate() / 31;
+                                var toBaseDay = 32-new Date(dTo.getFullYear(),dTo.getMonth(),32).getDate();
+                                var toP = dTo.getDate() / toBaseDay;
 
                                 dl = Math.round((cTo - cFrom) / cellWidth) + 1;
 
