@@ -1128,8 +1128,20 @@
                                 cFrom = from.data("offset");
                                 to = $(element).find("#" + dTo.getWeekId());
                                 cTo = to.data("offset");
+
+                                 // 起始周有效天数占当周百分比（基数为7）
+                                    // getDay的返回值0->周日 ；而标尺一周的范围是周一到周日
+                                var fromP = 1 - (dFrom.getDay()+6) % 7 / 7;
+                                // 结束周有效天数占当周百分比
+                                var toP = (dTo.getDay()===0 ? 7 :  dTo.getDay()) / 7;
+
                                 dl = Math.round((cTo - cFrom) / cellWidth) + 1;
-                                dp = 100 * (cellWidth * dl - 1) / dataPanelWidth;
+                                 // 第二个周到倒数第二个周的格数为dl-2
+                                var fullDl = dl-2;
+                                var allDl = fullDl + fromP + toP;
+
+                                //dp = 100 * (cellWidth * dl - 1) / dataPanelWidth;
+                                dp = 100 * (cellWidth * allDl - 1) / dataPanelWidth;
 
                                 _bar = core.createProgressBar(day.label, day.desc, day.customClass, day.dataObj);
 
@@ -1138,7 +1150,8 @@
                                 top = cellWidth * 3 + barOffset + topEl.data("offset");
                                 _bar.css({
                                   top: top,
-                                  left: Math.floor(cFrom),
+                                  //left: Math.floor(cFrom),
+                                  left: Math.floor(cFrom + (1-fromP)*cellWidth),
                                   width: dp + '%'
                                 });
 
@@ -1166,8 +1179,29 @@
                                 cFrom = from.data("offset");
                                 to = $(element).find("#dh-" + tools.genId(dTo));
                                 cTo = to.data("offset");
+
+                                // 起始月有效天数占当月百分比（基数为31）
+                                var fromP = 1 - dFrom.getDate() / 31;
+                                // 结束月有效天数占当月百分比
+                                var toP = dTo.getDate() / 31;
+
                                 dl = Math.round((cTo - cFrom) / cellWidth) + 1;
-                                dp = 100 * (cellWidth * dl - 1) / dataPanelWidth;
+
+                                var allDl;
+                                //如果起始为同月，dl为1
+                                if(dl === 1){
+                                    allDl = fromP - (1 - toP);
+                                }else{
+                                    // 第二个月到倒数第二个月的格数为dl-2
+                                    var fullDl = dl-2;
+                                    allDl = fullDl + fromP + toP;
+                                }
+                               
+                                //dp = 100 * (cellWidth * dl - 1) / dataPanelWidth;
+                                dp = 100 * (cellWidth * allDl - 1) / dataPanelWidth;
+
+                                // 校正： allDl不为0时，而dp为0%时至少有1px
+                                dp = dp <= 0 ? '1px' : dp;
 
                                 _bar = core.createProgressBar(day.label, day.desc, day.customClass, day.dataObj);
 
@@ -1176,8 +1210,10 @@
                                 top = cellWidth * 2 + barOffset + topEl.data("offset");
                                 _bar.css({
                                   top: top,
-                                  left: Math.floor(cFrom),
-                                  width: dp + '%'
+                                  //left: Math.floor(cFrom),
+                                  left: Math.floor(cFrom + (1-fromP)*cellWidth),
+                                  //width: dp + '%'
+                                  width: typeof dp === 'string' ? dp : dp + '%'
                                 });
 
                                 datapanel.append(_bar);
